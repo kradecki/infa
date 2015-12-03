@@ -1,24 +1,25 @@
 # infa
 
-infa is the missing link between Informatica Platform and Python. It creates a wrapper around Informatica's Command Line Tools and handles the communication to and output from the tools.
+**_infa_** is the missing link between Informatica platform and Python. It creates a wrapper around Informatica's Command Line Tools (pmrep, pmcmd, infacmd) and handles the communication to and output from those tools.
 
 Why use infa?
-* no native Python support provided by Informatica itself
+* no native Python API provided by Informatica itself
 * native command line tools are user focused and provide an output which is difficult to parse
-* infa focuses on API: output is provided in a machine friendly way (i.e. lists)
+* _infa_ focuses on API: output is provided in a machine friendly way (i.e. lists)
 * easy to grasp for seasoned Informatica developers and administrators
 
 ## Requirements
 
 * Python 2.x (at least 2.6.6)
 * Informatica command line tools installed on the same machine
-* Linux
+* Curretly implemented for and testet on Linux
 
 ## Usage
 
 Each Informatica command line tool is implemented as a Python class and the tool specific commands are designed as class methods.
 The following example compares the usage of the pmrep command line tool and the Pmrep class.
 
+Shell:
 ```sh
 # Connect to Informatica Repository
 $ /opt/informatica/9.6.1/server/bin/pmrep Connect -r Repository_Name -h localhost -o 6005 -n admin -x secret_password
@@ -30,6 +31,7 @@ $ /opt/informatica/9.6.1/server/bin/pmrep ListObjects -o transformation -t aggre
 $ /opt/informatica/9.6.1/server/bin/pmrep Cleanup
 ```
 
+Python:
 ```Python
 import infa
 
@@ -49,8 +51,8 @@ a = p.listobjects(o='transformation', t='aggregator', f='Demo')
 # Close connections and cleanup
 p.cleanup()
 ```
-The most significant difference is how the two tools handle the output. Native pmrep produces a human readable, machine unfreiendly output with a lot of additional information that blurs the output.
-infa handl
+The most significant difference is how the two tools handle the output. Native pmrep produces a human readable, machine unfriendly output with a lot of additional "noise" that blurs the information. The data is often delivered in an incosistent manner (example: blanks or commas as field delimiters).
+_infa_ takes a different approach. The focus is to deliver the results in an API friendly way. The irrelevant data is removed from the output and the requested information is provided in an easy-to-parse and consistent format.
 
 For detailed documentation please refer to the wiki pages.
 
