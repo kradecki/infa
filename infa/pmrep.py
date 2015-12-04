@@ -34,7 +34,7 @@ class Pmrep(object):
             else:
                 raise InfaPmrepError("unsupported init option: %s" % key)
 
-        pmrep_output = helper.execute_cmd(command)
+        pmrep_output = infa.helper.execute_cmd(command)
         if not "connect completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
             raise InfaPmrepError("connection to repository failed using %s" % " ".join(command)) 
@@ -93,7 +93,7 @@ class Pmrep(object):
             None
         """
         command = [self.pmrep, 'cleanup']
-        pmrep_output = helper.execute_cmd(command)
+        pmrep_output = infa.helper.execute_cmd(command)
 
     def cleardeploymentgroup(self):
         """
@@ -151,7 +151,7 @@ class Pmrep(object):
             else:
                 raise Exception("unsupported createfolder option: %s" % key)
 
-        pmrep_output = helper.execute_cmd(command)
+        pmrep_output = infa.helper.execute_cmd(command)
         if not "createfolder completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
             raise Exception("failed to create label using %s" % " ".join(command)) 
@@ -174,7 +174,7 @@ class Pmrep(object):
             else:
                 raise Exception("unsupported createlabel option: %s" % key)
 
-        pmrep_output = helper.execute_cmd(command)
+        pmrep_output = infa.helper.execute_cmd(command)
         if not "createlabel completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
             raise Exception("failed to create label using %s" % " ".join(command)) 
@@ -213,7 +213,7 @@ class Pmrep(object):
             else:
                 raise Exception("unsupported deletefolder option: %s" % key)
 
-        pmrep_output = helper.execute_cmd(command)
+        pmrep_output = infa.helper.execute_cmd(command)
         if not "deletefolder completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
             raise Exception("failed to delete folder using %s" % " ".join(command)) 
@@ -237,7 +237,7 @@ class Pmrep(object):
             else:
                 raise Exception("unsupported delete option: %s" % key)
 
-        pmrep_output = helper.execute_cmd(command)
+        pmrep_output = infa.helper.execute_cmd(command)
         if not "deletelabel completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
             raise Exception("failed to delete label using %s" % " ".join(command)) 
@@ -289,8 +289,8 @@ class Pmrep(object):
         List all connection objects in the repository and their respective connection types.
         """
         command = [self.pmrep, 'listconnections', '-t']
-        pmrep_output = helper.execute_cmd(command)
-        return helper.format_output(pmrep_output, ',')
+        pmrep_output = infa.helper.execute_cmd(command)
+        return infa.helper.format_output(pmrep_output, ',')
 
     def listobjectdependencies(self):
         """
@@ -323,5 +323,5 @@ class Pmrep(object):
             else:
                 raise Exception("unsupported listobjects option: %s" % key)
 
-        pmrep_output = helper.execute_cmd(command)
-        return helper.format_output(pmrep_output, ' ')
+        pmrep_output = infa.helper.execute_cmd(command)
+        return infa.helper.format_output(pmrep_output, ' ')
