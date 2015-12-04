@@ -68,66 +68,66 @@ infa ist currently a work in progres. Below is an overview of features currently
 
 | pmrep Command                       | Pmrep Class method                 | Implemented? | Comment  |
 | ------------------------------------|------------------------------------|:------------:|----------|
-| AddToDeploymentGroup                |                                    | ✘           |          |
-| ApplyLabel                          |                                    | ✘           |          |
-| AssignPermission                    |                                    | ✘           |          |
-| BackUp                              |                                    | ✘           |          |
-| ChangeOwner                         |                                    | ✘           |          |
-| CheckIn                             |                                    | ✘           |          |
-| CleanUp                             | cleanup                            | ✅           |        |
-| ClearDeploymentGroup                |                                    | ✘           |          |
-| Connect                             | \_\_init\_\_                           | ✅          |Used implicitly when class instance is created|
-| Create                              |                                    | ✘           |          |
-| CreateConnection                    |                                    | ✘           |          |
-| CreateDeploymentGroup               |                                    | ✘           |          |
-| CreateFolder                        | createfolder                       | ✅           |          |
-| CreateLabel                         | createlabel                        | ✅          |          |
-| Delete                              |                                    | ✘           |          |
-| DeleteConnection                    |                                    | ✘           |          |
-| DeleteDeploymentGroup               |                                    | ✘           |          |
-| DeleteFolder                        | deletefolder                       | ✅          |          |
-| DeleteLabel                         | deletelabel                        | ✅          |          |
-| DeleteObject                        |                                    | ✘           |          |
-| ExecuteQuery                        |                                    | ✘           |          |
-| Exit                                |                                    | ✘           |No interactive mode planned|
-| FindCheckout                        |                                    | ✘           |          |
-| GetConnectionDetails                |                                    | ✘           |          |
-| GenerateAbapProgramToFile           |                                    | ✘           |          |
-| Help                                |                                    | ✘           |Not supported|
-| InstallAbapProgram                  |                                    | ✘           |          |
-| KillUserConnection                  |                                    | ✘           |          |
-| ListConnections                     | listconnections                    | ✅          |          |
-| ListObjectDependencies              |                                    | ✘           |          |
-| ListObjects                         | listobjects                        | ✅          |          |
-| ListTablesBySess                    |                                    | ✘           |          |
-| ListUserConnections                 |                                    | ✘           |          |
-| MassUpdate                          |                                    | ✘           |          |
-| ModifyFolder                        |                                    | ✘           |          |
-| Notify                              |                                    | ✘           |          |
-| ObjectExport                        |                                    | ✘           |          |
-| ObjectImport                        |                                    | ✘           |          |
-| PurgeVersion                        |                                    | ✘           |          |
-| Register                            |                                    | ✘           |          |
-| RegisterPlugin                      |                                    | ✘           |          |
-| Restore                             |                                    | ✘           |          |
-| RollbackDeployment                  |                                    | ✘           |          |
-| Run                                 |                                    | ✘           |          |
-| ShowConnectionInfo                  |                                    | ✘           |          |
-| SwitchConnection                    |                                    | ✘           |          |
-| TruncateLog                         |                                    | ✘           |          |
-| UndoCheckout                        |                                    | ✘           |          |
-| Unregister                          |                                    | ✘           |          |
-| UnregisterPlugin                    |                                    | ✘           |          |
-| UpdateConnection                    |                                    | ✘           |          |
-| UpdateEmailAddr                     |                                    | ✘           |          |
-| UpdateSeqGenVals                    |                                    | ✘           |          |
-| UpdateSrcPrefix                     |                                    | ✘           |          |
-| UpdateStatistics                    |                                    | ✘           |          |
-| UpdateTargPrefix                    |                                    | ✘           |          |
-| Upgrade                             |                                    | ✘           |          |
-| UninstallAbapProgram                |                                    | ✘           |          |
-| Validate                            |                                    | ✘           |          |
-| Version                             |                                    | ✘           |          |
+| AddToDeploymentGroup                |                                    | ✘            |          |
+| ApplyLabel                          |                                    | ✘            |          |
+| AssignPermission                    |                                    | ✘            |          |
+| BackUp                              |                                    | ✘            |          |
+| ChangeOwner                         |                                    | ✘            |          |
+| CheckIn                             |                                    | ✘            |          |
+| CleanUp                             | cleanup                            | ✅            |          |
+| ClearDeploymentGroup                |                                    | ✘            |          |
+| Connect                             | \_\_init\_\_                       | ✅            |Used implicitly when class instance is created|
+| Create                              |                                    | ✘            |          |
+| CreateConnection                    |                                    | ✘            |          |
+| CreateDeploymentGroup               |                                    | ✘            |          |
+| CreateFolder                        | createfolder                       | ✅            |          |
+| CreateLabel                         | createlabel                        | ✅            |          |
+| Delete                              |                                    | ✘            |          |
+| DeleteConnection                    |                                    | ✘            |          |
+| DeleteDeploymentGroup               |                                    | ✘            |          |
+| DeleteFolder                        | deletefolder                       | ✅            |          |
+| DeleteLabel                         | deletelabel                        | ✅            |          |
+| DeleteObject                        |                                    | ✘            |          |
+| ExecuteQuery                        |                                    | ✘            |          |
+| Exit                                |                                    | ✘            |No interactive mode planned|
+| FindCheckout                        |                                    | ✘            |          |
+| GetConnectionDetails                |                                    | ✘            |          |
+| GenerateAbapProgramToFile           |                                    | ✘            |          |
+| Help                                |                                    | ✘            |Not supported|
+| InstallAbapProgram                  |                                    | ✘            |          |
+| KillUserConnection                  |                                    | ✘            |          |
+| ListConnections                     | listconnections                    | ✅            |          |
+| ListObjectDependencies              |                                    | ✘            |          |
+| ListObjects                         | listobjects                        | ✅            |          |
+| ListTablesBySess                    |                                    | ✘            |          |
+| ListUserConnections                 |                                    | ✘            |          |
+| MassUpdate                          |                                    | ✘            |          |
+| ModifyFolder                        |                                    | ✘            |          |
+| Notify                              |                                    | ✘            |          |
+| ObjectExport                        |                                    | ✘            |          |
+| ObjectImport                        |                                    | ✘            |          |
+| PurgeVersion                        |                                    | ✘            |          |
+| Register                            |                                    | ✘            |          |
+| RegisterPlugin                      |                                    | ✘            |          |
+| Restore                             |                                    | ✘            |          |
+| RollbackDeployment                  |                                    | ✘            |          |
+| Run                                 |                                    | ✘            |          |
+| ShowConnectionInfo                  |                                    | ✘            |          |
+| SwitchConnection                    |                                    | ✘            |          |
+| TruncateLog                         |                                    | ✘            |          |
+| UndoCheckout                        |                                    | ✘            |          |
+| Unregister                          |                                    | ✘            |          |
+| UnregisterPlugin                    |                                    | ✘            |          |
+| UpdateConnection                    |                                    | ✘            |          |
+| UpdateEmailAddr                     |                                    | ✘            |          |
+| UpdateSeqGenVals                    |                                    | ✘            |          |
+| UpdateSrcPrefix                     |                                    | ✘            |          |
+| UpdateStatistics                    |                                    | ✘            |          |
+| UpdateTargPrefix                    |                                    | ✘            |          |
+| Upgrade                             |                                    | ✘            |          |
+| UninstallAbapProgram                |                                    | ✘            |          |
+| Validate                            |                                    | ✘            |          |
+| Version                             |                                    | ✘            |          |
 
 ### Pmcmd
 
