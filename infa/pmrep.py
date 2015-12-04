@@ -1,7 +1,7 @@
 import os
 import string
-import helper
-from error import * 
+import infa.helper
+from infa.exceptions import InfaPmrepError
 
 class Pmrep(object):
     """
@@ -20,10 +20,10 @@ class Pmrep(object):
     def __init__(self, pmrep, **params):
         self.pmrep = pmrep
         if not (os.path.isfile(self.pmrep) and os.access(self.pmrep, os.X_OK)):
-            raise PmrepConnectError("%s is not the correct path to pmrep binary" % self.pmrep)
+            raise InfaPmrepError("%s is not the correct path to pmrep binary" % self.pmrep)
 
         if ('x' in params.keys()) and ('X' in params.keys()):
-            raise PmrepConnectError("both [x] and [X] options supplied. Only one allowed.")
+            raise InfaPmrepError("both [x] and [X] options supplied. Only one allowed.")
 
         options_allowed = ['r', 'h', 'o', 'n', 's', 'x', 'X', 'u', 't']
         command = [self.pmrep, 'connect']
@@ -32,12 +32,12 @@ class Pmrep(object):
             if key in options_allowed:
                 command.extend(['-' + key, value])
             else:
-                raise PmrepConnectError("unsupported init option: %s" % key)
+                raise InfaPmrepError("unsupported init option: %s" % key)
 
         pmrep_output = helper.execute_cmd(command)
         if not "connect completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
-            raise PmrepConnectError("connection to repository failed using %s" % " ".join(command)) 
+            raise InfaPmrepError("connection to repository failed using %s" % " ".join(command)) 
 
     def addtodeploymentgroup(self):
         """
