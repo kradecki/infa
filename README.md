@@ -76,7 +76,7 @@ infa ist currently a work in progres. Below is an overview of features currently
 | CheckIn                             |                                    | NO           |          |
 | CleanUp                             | cleanup                            | YES          |          |
 | ClearDeploymentGroup                |                                    | NO           |          |
-| Connect                             | __init__                           | YES          |Used implicitly when class instance is created|
+| Connect                             | \_\_init\_\_                           | YES          |Used implicitly when class instance is created|
 | Create                              |                                    | NO           |          |
 | CreateConnection                    |                                    | NO           |          |
 | CreateDeploymentGroup               |                                    | NO           |          |
@@ -92,7 +92,7 @@ infa ist currently a work in progres. Below is an overview of features currently
 | Exit                                |                                    | NO           |No interactive mode planned|
 | FindCheckout                        |                                    | NO           |          |
 | GetConnectionDetails                |                                    | NO           |          |
-| RelationalGenerateAbapProgramToFile |                                    | NO           |          |
+| GenerateAbapProgramToFile           |                                    | NO           |          |
 | Help                                |                                    | NO           |Not supported|
 | InstallAbapProgram                  |                                    | NO           |          |
 | KillUserConnection                  |                                    | NO           |          |
