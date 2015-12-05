@@ -122,7 +122,7 @@ _infa_ is a work-in-progres. Below is an overview of features currently implemen
 | UpdateEmailAddr                     |                                    | ✘            |          |
 | UpdateSeqGenVals                    |                                    | ✘            |          |
 | UpdateSrcPrefix                     |                                    | ✘            |          |
-| UpdateStatistics                    |                                    | ✘            |          |
+| UpdateStatistics                    | updatestatistics                   | ✅            |          |
 | UpdateTargPrefix                    |                                    | ✘            |          |
 | Upgrade                             |                                    | ✘            |          |
 | UninstallAbapProgram                |                                    | ✘            |          |

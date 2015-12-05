@@ -517,7 +517,6 @@ class Pmrep(object):
             None
         """
         command = [self.pmrep, 'updatestatistics']
-        
         pmrep_output = infa.helper.execute_cmd(command)
         if not "updatestatistics completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
