@@ -135,7 +135,7 @@ _Comming up._
 
 ### Authors
 
-_infa_ was created and is being developed (krzysztof.radecki/gmail/com) by Krzysztof Radecki. Contributions from other developers are most welcome and will be credited.
+_infa_ was created and is being developed by Krzysztof Radecki (krzysztof.radecki/gmail/com). Contributions from other developers are most welcome and will be credited to them.
 
 ### License
 
