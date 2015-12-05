@@ -519,7 +519,7 @@ class Pmrep(object):
         command = [self.pmrep, 'updatestatistics']
         
         pmrep_output = infa.helper.execute_cmd(command)
-        if not "updatestatistics completed successfully" in pmrep_output:
+        if not "updatestatistics completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
             raise InfaPmrepError("failed to update statistics using %s" % " ".join(command)) 
 
