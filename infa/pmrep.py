@@ -325,3 +325,235 @@ class Pmrep(object):
 
         pmrep_output = infa.helper.execute_cmd(command)
         return infa.helper.format_output(pmrep_output, ' ')
+
+    def listtablesbysess(self):
+        """
+        Return a list of sources or targets used in a session.
+        """
+        command = [self.pmrep, 'listtablesbysess']
+        pass
+
+    def listuserconnections(self):
+        """
+        List information for each user connected to the repository.
+        """
+        command = [self.pmrep, 'listuserconnections']
+        pass
+
+
+    def massupdate(self):
+        """
+        Update session properties for a set of sessions that meet specified conditions.
+        """
+        command = [self.pmrep, 'massupdate']
+        pass
+
+
+    def modifyfolder(self):
+        """
+        Modify folder properties in a non-versioned repository.
+        """
+        command = [self.pmrep, 'modifyfolder']
+        pass
+
+
+    def notify(self):
+        """
+        Sends notification messages to users connected to a repository or users connected 
+        to all repositories managed by a Repository Service.
+        """
+        command = [self.pmrep, 'notify']
+        pass
+
+
+    def objectexport(self):
+        """
+        Exports objects to an XML file defined by the powrmart.dtd file.
+        """
+        command = [self.pmrep, 'objectexport']
+        pass
+
+
+    def objectimport(self):
+        """
+        Imports objects from an XML file.
+        """
+        command = [self.pmrep, 'objectimport']
+        pass
+
+
+    def purgeversion(self):
+        """
+        Purge object versions from the repository database.
+        """
+        command = [self.pmrep, 'purgeversion']
+        pass
+
+
+    def register(self):
+        """
+        Register a local repository with a connected global repository.
+        """
+        command = [self.pmrep, 'register']
+        pass
+
+
+    def registerplugin(self):
+        """
+        Register an external plug-in to a repository.
+        """
+        command = [self.pmrep, 'registerplugin']
+        pass
+
+
+    def restore(self):
+        """
+        Restore a repository backup file to a database.
+        """
+        command = [self.pmrep, 'restore']
+        pass
+
+
+    def rollbackdeployment(self):
+        """
+        Roll back a deployment to purge deployed versions of objects from the target repository.
+        """
+        command = [self.pmrep, 'rollbackdeployment']
+        pass
+
+
+    def run(self):
+        """
+        Open a script file containing multiple pmrep commands, read each command, and run them.
+        """
+        command = [self.pmrep, 'run']
+        pass
+
+
+    def showconnectioninfo(self):
+        """
+        Return the repository name and user information for the current connection.
+        """
+        command = [self.pmrep, 'showconnectioninfo']
+        pass
+
+
+    def switchconnection(self):
+        """
+        Change the name of an existing connection.
+        """
+        command = [self.pmrep, 'switchconnection']
+        pass
+
+    def truncatelog(self):
+        """
+        Delete details from the repository. You can delete all logs, or delete logs for a folder or workflow.
+        """
+        command = [self.pmrep, 'truncatelog']
+        pass
+
+    def undocheckout(self):
+        """
+        Reverses the checkout of an object.
+        """
+        command = [self.pmrep, 'undocheckout']
+        pass
+
+
+    def unregister(self):
+        """
+        Unregisters a local repository from a connected global repository.
+        """
+        command = [self.pmrep, 'unregister']
+        pass
+
+
+    def unregisterplugin(self):
+        """
+        Removes a plug-in from a repository.
+        """
+        command = [self.pmrep, 'unregisterplugin']
+        pass
+
+
+    def updateconnection(self):
+        """
+        Updates the user name, password, connect string, and attributes for a database connection.
+        """
+        command = [self.pmrep, 'updateconnection']
+        pass
+
+    def updateemailaddr(self):
+        """
+        Updates the session notification email addresses associated with the Email tasks
+        assigned to the session.
+        """
+        command = [self.pmrep, 'updateemailaddr']
+        pass
+
+    def updateseqgenvals(self):
+        """
+        Updates one or more of the following properties for the specified Sequence Generator transformation:
+         - Start Value
+         - End Value
+         - Increment By
+         - Current Value
+        """
+        command = [self.pmrep, 'updateseqgenvals']
+        pass
+
+    def updatesrcprefix(self):
+        """
+        Updates the owner name for session source tables.
+        """
+        command = [self.pmrep, 'updatesrcprefix']
+        pass
+
+    def updatestatistics(self):
+        """
+        Update statistics for repository tables and indexes.
+
+        Args:
+            None
+        """
+        command = [self.pmrep, 'updatestatistics']
+        
+        pmrep_output = infa.helper.execute_cmd(command)
+        if not "updatestatistics completed successfully" in pmrep_output:
+            print "\n".join(pmrep_output)
+            raise InfaPmrepError("failed to update statistics using %s" % " ".join(command)) 
+
+    def updatetargprefix(self):
+        """
+        Update the table name prefix for session target tables.
+        """
+        command = [self.pmrep, 'updatetargprefix']
+        pass
+
+    def upgrade(self):
+        """
+        Upgrade a repository to the latest version.
+        """
+        command = [self.pmrep, 'upgrade']
+        pass
+
+    def uninstallabapprogram(self):
+        """
+        Uninstalls the ABAP program.
+        """
+        command = [self.pmrep, 'uninstallabapprogram']
+        pass
+
+    def validate(self):
+        """
+        Validates objects.
+        """
+        command = [self.pmrep, 'validate']
+        pass
+
+    def version(self):
+        """
+        Displays the PowerCenter version and Informatica trademark and copyright information.
+        """
+        command = [self.pmrep, 'version']
+        pass
