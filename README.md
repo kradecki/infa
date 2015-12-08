@@ -12,7 +12,7 @@ Why use infa?
 
 * Python 2.x (implemented and tested on 2.7.5)
 * Informatica command line tools (pmrep, pmcmd) installed on the same machine
-* Implemeted and tested on Linux
+* Implemented and tested on Linux
 
 ## Usage
 
@@ -51,7 +51,7 @@ a = p.listobjects(o='transformation', t='aggregator', f='Demo')
 # Close connections and cleanup
 p.cleanup()
 ```
-The most significant difference is how both tools handle the output. Native pmrep produces a human readable, machine unfriendly output with a lot of additional "noise" that blurs the desired information. The data is often delivered in an incosistent manner (example: blanks or commas as field delimiters).
+The most significant difference is how both tools handle the output. Native pmrep produces a human readable, machine unfriendly output with a lot of additional "noise" that blurs the desired information. The data is often delivered in an inconsistent manner (example: blanks or commas as field delimiters).
 _infa_ takes a different approach. The focus is to deliver the results in an API friendly way. The irrelevant data is removed from the output and the requested information is provided in an easy-to-parse and consistent format.
 
 For detailed documentation please refer to the wiki pages.
