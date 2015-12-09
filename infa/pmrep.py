@@ -22,12 +22,11 @@ class Pmrep(object):
         if not (os.path.isfile(self.pmrep) and os.access(self.pmrep, os.X_OK)):
             raise InfaPmrepError("%s is not the correct path to pmrep binary" % self.pmrep)
 
-        opts_r = ['r', 'h', 'o', 'n', 's', 'x', 'u', 't']
-        opts_q = []
-        opts_b = []
+        opts_args = ['r', 'h', 'o', 'n', 's', 'x', 'u', 't']
+        opts_flags = []
 
         command = [self.pmrep, 'connect']
-        command.extend(infa.helper.cmd_prepare(params, opts_r, opts_q, opts_b))
+        command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
 
         pmrep_output = infa.helper.cmd_execute(command)
         if not "connect completed successfully." in pmrep_output:
@@ -83,12 +82,11 @@ class Pmrep(object):
         """
         Backup the repository to the specified file.
         """
-        options_allowed = ['o']
-        options_allowed_quote = ['d']
-        options_allowed_bool = ['f', 'b', 'j', 'q', 'v']
+        opts_args = ['o', 'd']
+        opts_flags = ['f', 'b', 'j', 'q', 'v']
 
         command = [self.pmrep, 'backup']
-        command.extend(infa.helper.cmd_prepare(params, options_allowed, options_allowed_quote, options_allowed_bool))
+        command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
         print command
 
     def changeowner(self):
