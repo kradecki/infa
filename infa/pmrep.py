@@ -8,8 +8,8 @@ class Pmrep(object):
     Class for interacting with Informatica PowerCenter repository using the pmrep binary.
 
     It tries to implement a pythonic-API while at the same time introducing as little changes
-    as possible to the already known and well documented Informatica pmrep commands. 
-    
+    as possible to the already known and well documented Informatica pmrep commands.
+
     All of the implemented methods are named the same, as their pmrep counterparts
     the only difference being changing of naming to lowercase, instead of retaining
     the original CamelCase.
@@ -26,18 +26,15 @@ class Pmrep(object):
             raise InfaPmrepError("both [x] and [X] options supplied. Only one allowed.")
 
         options_allowed = ['r', 'h', 'o', 'n', 's', 'x', 'X', 'u', 't']
+        options_allowed_quote = []
+        options_allowed_bool = []
         command = [self.pmrep, 'connect']
-
-        for key, value in params.iteritems():
-            if key in options_allowed:
-                command.extend(['-' + key, value])
-            else:
-                raise InfaPmrepError("unsupported init option: %s" % key)
+        command.extend(infa.helper.cmd_prepare(params, options_allowed, options_allowed_quote, options_allowed_bool))
 
         pmrep_output = infa.helper.cmd_execute(command)
         if not "connect completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
-            raise InfaPmrepError("connection to repository failed using %s" % " ".join(command)) 
+            raise InfaPmrepError("connection to repository failed using %s" % " ".join(command))
 
     def addtodeploymentgroup(self):
         """
@@ -82,8 +79,8 @@ class Pmrep(object):
         pmrep_output = infa.helper.cmd_execute(command)
         if not "assignpermission completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
-            raise InfaPmrepError("execution of assignpermission failed using %s" % " ".join(command)) 
-     
+            raise InfaPmrepError("execution of assignpermission failed using %s" % " ".join(command))
+
     def backup(self, **params):
         """
         Backup the repository to the specified file.
@@ -182,7 +179,7 @@ class Pmrep(object):
         pmrep_output = infa.helper.cmd_execute(command)
         if not "createfolder completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
-            raise Exception("failed to create label using %s" % " ".join(command)) 
+            raise Exception("failed to create label using %s" % " ".join(command))
 
     def createlabel(self, **params):
         """
@@ -205,7 +202,7 @@ class Pmrep(object):
         pmrep_output = infa.helper.cmd_execute(command)
         if not "createlabel completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
-            raise Exception("failed to create label using %s" % " ".join(command)) 
+            raise Exception("failed to create label using %s" % " ".join(command))
 
     def delete(self):
         """
@@ -244,13 +241,13 @@ class Pmrep(object):
         pmrep_output = infa.helper.cmd_execute(command)
         if not "deletefolder completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
-            raise Exception("failed to delete folder using %s" % " ".join(command)) 
+            raise Exception("failed to delete folder using %s" % " ".join(command))
 
     def deletelabel(self, **params):
         """
         Delete a label and remove the label from all objects that use it.
 
-        This method by default uses the '-f' pmrep flag to avoid user 
+        This method by default uses the '-f' pmrep flag to avoid user
         interaction.
 
         Args (all to be supplied as kwargs):
@@ -268,7 +265,7 @@ class Pmrep(object):
         pmrep_output = infa.helper.cmd_execute(command)
         if not "deletelabel completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
-            raise Exception("failed to delete label using %s" % " ".join(command)) 
+            raise Exception("failed to delete label using %s" % " ".join(command))
 
     def deleteobject(self):
         """
@@ -387,7 +384,7 @@ class Pmrep(object):
 
     def notify(self):
         """
-        Sends notification messages to users connected to a repository or users connected 
+        Sends notification messages to users connected to a repository or users connected
         to all repositories managed by a Repository Service.
         """
         command = [self.pmrep, 'notify']
@@ -548,7 +545,7 @@ class Pmrep(object):
         pmrep_output = infa.helper.cmd_execute(command)
         if not "updatestatistics completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
-            raise InfaPmrepError("failed to update statistics using %s" % " ".join(command)) 
+            raise InfaPmrepError("failed to update statistics using %s" % " ".join(command))
 
     def updatetargprefix(self):
         """
