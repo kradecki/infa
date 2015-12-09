@@ -53,14 +53,37 @@ class Pmrep(object):
         command = [self.pmrep, 'applylabel']
         pass
 
-    def assignpermission(self):
+    def assignpermission(self, **params):
         """
         Add, remove or update permissions on a global object for a user,
         group, or the Others default group.
-        """
-        command = [self.pmrep, 'assignpermission']
-        pass
 
+        Args (all to be supplied as kwargs):
+            o (str): object type
+            t (str): object subtype
+            n (str): object name
+            u (str): user name
+            g (str): group name
+            s (str): security domain
+            p (str): permission (r, w, x or a combination of those)
+        """
+        if ('u' in params.keys()) and ('g' in params.keys()):
+            raise InfaPmrepError("both [u] and [g] options supplied. Only one allowed.")
+
+        options_allowed = ['o', 't', 'n', 'u', 'g', 's', 'p']
+        command = [self.pmrep, 'assignpermission']
+
+        for key, value in params.iteritems():
+            if key in options_allowed:
+                command.extend(['-' + key, value])
+            else:
+                raise InfaPmrepError("unsupported assignpermission option: %s" % key)
+
+        pmrep_output = infa.helper.execute_cmd(command)
+        if not "assignpermission completed successfully." in pmrep_output:
+            print "\n".join(pmrep_output)
+            raise InfaPmrepError("execution of assignpermission failed using %s" % " ".join(command)) 
+     
     def backup(self):
         """
         Backup the repository to the specified file.

@@ -70,7 +70,7 @@ _infa_ is a work-in-progres. Below is an overview of features currently implemen
 | ------------------------------------|------------------------------------|:------------:|----------|
 | AddToDeploymentGroup                |                                    | ✘            |          |
 | ApplyLabel                          |                                    | ✘            |          |
-| AssignPermission                    |                                    | ✘            |          |
+| AssignPermission                    | assignpermission                   | ✅            |          |
 | BackUp                              |                                    | ✘            |          |
 | ChangeOwner                         |                                    | ✘            |          |
 | CheckIn                             |                                    | ✘            |          |
