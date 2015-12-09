@@ -34,7 +34,7 @@ class Pmrep(object):
             else:
                 raise InfaPmrepError("unsupported init option: %s" % key)
 
-        pmrep_output = infa.helper.execute_cmd(command)
+        pmrep_output = infa.helper.cmd_execute(command)
         if not "connect completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
             raise InfaPmrepError("connection to repository failed using %s" % " ".join(command)) 
@@ -79,17 +79,22 @@ class Pmrep(object):
             else:
                 raise InfaPmrepError("unsupported assignpermission option: %s" % key)
 
-        pmrep_output = infa.helper.execute_cmd(command)
+        pmrep_output = infa.helper.cmd_execute(command)
         if not "assignpermission completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
             raise InfaPmrepError("execution of assignpermission failed using %s" % " ".join(command)) 
      
-    def backup(self):
+    def backup(self, **params):
         """
         Backup the repository to the specified file.
         """
+        options_allowed = ['o']
+        options_allowed_quote = ['d']
+        options_allowed_bool = ['f', 'b', 'j', 'q', 'v']
+
         command = [self.pmrep, 'backup']
-        pass
+        command.extend(infa.helper.cmd_prepare(params, options_allowed, options_allowed_quote, options_allowed_bool))
+        print command
 
     def changeowner(self):
         """
@@ -116,7 +121,7 @@ class Pmrep(object):
             None
         """
         command = [self.pmrep, 'cleanup']
-        pmrep_output = infa.helper.execute_cmd(command)
+        pmrep_output = infa.helper.cmd_execute(command)
 
     def cleardeploymentgroup(self):
         """
@@ -169,12 +174,12 @@ class Pmrep(object):
                 command.extend(['-' + key, value])
             elif key in options_allowed_quote:
                 command.extend(['-' + key, '"' + value + '"'])
-            elif key in options_allowed_bool:
+            elif key in options_allowed_bool and value == True:
                 command.extend(['-' + key])
-            else:
+            elif key not in options_allowed + options_allowed_quote + options_allowed_bool:
                 raise Exception("unsupported createfolder option: %s" % key)
 
-        pmrep_output = infa.helper.execute_cmd(command)
+        pmrep_output = infa.helper.cmd_execute(command)
         if not "createfolder completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
             raise Exception("failed to create label using %s" % " ".join(command)) 
@@ -197,7 +202,7 @@ class Pmrep(object):
             else:
                 raise Exception("unsupported createlabel option: %s" % key)
 
-        pmrep_output = infa.helper.execute_cmd(command)
+        pmrep_output = infa.helper.cmd_execute(command)
         if not "createlabel completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
             raise Exception("failed to create label using %s" % " ".join(command)) 
@@ -236,7 +241,7 @@ class Pmrep(object):
             else:
                 raise Exception("unsupported deletefolder option: %s" % key)
 
-        pmrep_output = infa.helper.execute_cmd(command)
+        pmrep_output = infa.helper.cmd_execute(command)
         if not "deletefolder completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
             raise Exception("failed to delete folder using %s" % " ".join(command)) 
@@ -260,7 +265,7 @@ class Pmrep(object):
             else:
                 raise Exception("unsupported delete option: %s" % key)
 
-        pmrep_output = infa.helper.execute_cmd(command)
+        pmrep_output = infa.helper.cmd_execute(command)
         if not "deletelabel completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
             raise Exception("failed to delete label using %s" % " ".join(command)) 
@@ -312,7 +317,7 @@ class Pmrep(object):
         List all connection objects in the repository and their respective connection types.
         """
         command = [self.pmrep, 'listconnections', '-t']
-        pmrep_output = infa.helper.execute_cmd(command)
+        pmrep_output = infa.helper.cmd_execute(command)
         return infa.helper.format_output(pmrep_output, ',')
 
     def listobjectdependencies(self):
@@ -346,7 +351,7 @@ class Pmrep(object):
             else:
                 raise Exception("unsupported listobjects option: %s" % key)
 
-        pmrep_output = infa.helper.execute_cmd(command)
+        pmrep_output = infa.helper.cmd_execute(command)
         return infa.helper.format_output(pmrep_output, ' ')
 
     def listtablesbysess(self):
@@ -540,7 +545,7 @@ class Pmrep(object):
             None
         """
         command = [self.pmrep, 'updatestatistics']
-        pmrep_output = infa.helper.execute_cmd(command)
+        pmrep_output = infa.helper.cmd_execute(command)
         if not "updatestatistics completed successfully." in pmrep_output:
             print "\n".join(pmrep_output)
             raise InfaPmrepError("failed to update statistics using %s" % " ".join(command)) 

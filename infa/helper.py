@@ -4,7 +4,7 @@ Informatica programs and process their output.
 """
 import subprocess
 
-def execute_cmd(command):
+def cmd_execute(command):
     """
     Execute a command and return the output as an array of lines.
     """
@@ -14,6 +14,28 @@ def execute_cmd(command):
         stderr=subprocess.PIPE,
     ).communicate()
     return command_output[0].split('\n')
+
+def cmd_prepare(params, opts_r, opts_q, opts_b):
+    """
+    Prepare the command parameters
+
+    Args:
+       params (str): parameters supplied
+       opts_r ([str]): list of command line switches of which arguments need not be quoted
+       opts_q ([str]): list of command line switches of which arguments must be quoted
+       opts_b ([str]): list of command line switches without arguments (boolean)
+    """
+    command = []
+    for key, value in params.iteritems():
+        if key in opts_r:
+            command.extend(['-' + key, value])
+        elif key in opts_q:
+            command.extend(['-' + key, '"' + value + '"'])
+        elif key in opts_b:
+            command.extend(['-' + key])
+        elif key not in opts_r + opts_q + opts_b:
+             raise Exception("unsupported option: %s" % key)
+    return command
 
 def format_output(output, field_separator):
     """
