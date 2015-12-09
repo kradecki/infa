@@ -27,7 +27,7 @@ def cmd_prepare(params, opts_args, opts_flags):
     command = []
     for key, value in params.iteritems():
         if key in opts_args:
-            command.extend(['-' + key + ' \'' + value + ' \''])
+            command.extend(['-' + key, value])
         elif key in opts_flags:
             command.extend(['-' + key])
         elif key not in opts_args + opts_flags:
