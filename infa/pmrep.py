@@ -22,14 +22,12 @@ class Pmrep(object):
         if not (os.path.isfile(self.pmrep) and os.access(self.pmrep, os.X_OK)):
             raise InfaPmrepError("%s is not the correct path to pmrep binary" % self.pmrep)
 
-        if ('x' in params.keys()) and ('X' in params.keys()):
-            raise InfaPmrepError("both [x] and [X] options supplied. Only one allowed.")
+        opts_r = ['r', 'h', 'o', 'n', 's', 'x', 'u', 't']
+        opts_q = []
+        opts_b = []
 
-        options_allowed = ['r', 'h', 'o', 'n', 's', 'x', 'X', 'u', 't']
-        options_allowed_quote = []
-        options_allowed_bool = []
         command = [self.pmrep, 'connect']
-        command.extend(infa.helper.cmd_prepare(params, options_allowed, options_allowed_quote, options_allowed_bool))
+        command.extend(infa.helper.cmd_prepare(params, opts_r, opts_q, opts_b))
 
         pmrep_output = infa.helper.cmd_execute(command)
         if not "connect completed successfully." in pmrep_output:
