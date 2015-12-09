@@ -15,25 +15,22 @@ def cmd_execute(command):
     ).communicate()
     return command_output[0].split('\n')
 
-def cmd_prepare(params, opts_r, opts_q, opts_b):
+def cmd_prepare(params, opts_args, opts_flags):
     """
     Prepare the command parameters
 
     Args:
        params (str): parameters supplied
-       opts_r ([str]): list of command line switches of which arguments need not be quoted
-       opts_q ([str]): list of command line switches of which arguments must be quoted
-       opts_b ([str]): list of command line switches without arguments (boolean)
+       opts_args ([str]): list of command line options with arguments
+       opts_flags ([str]): list of command line options without arguments
     """
     command = []
     for key, value in params.iteritems():
-        if key in opts_r:
-            command.extend(['-' + key, value])
-        elif key in opts_q:
-            command.extend(['-' + key, '"' + value + '"'])
-        elif key in opts_b:
+        if key in opts_args:
+            command.extend(['-' + key + ' \'' + value + ' \''])
+        elif key in opts_flags:
             command.extend(['-' + key])
-        elif key not in opts_r + opts_q + opts_b:
+        elif key not in opts_args + opts_flags:
              raise Exception("unsupported option: %s" % key)
     return command
 
