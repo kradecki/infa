@@ -115,12 +115,27 @@ class Pmrep(object):
         pmrep_output = infa.helper.cmd_execute(command)
         infa.helper.cmd_status(command, pmrep_output)
 
-    def checkin(self):
+    def checkin(self, **params):
         """
         Check in an object that has been checked out.
+        
+        Args:
+            o (str): object type
+            t (Optional[str]): object subtype
+            n (str): object name
+            f (str): folder name
+            c (Optional[str]): comments
+            s (Optional[str]): dbd separator. Relevnt if ODBC source has a period ('.')
+                in the name
         """
+        opts_args = ['o', 't', 'n', 'f', 'c', 's']
+        opts_flags = []
+        
         command = [self.pmrep, 'checkin']
-        pass
+        command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
+        
+        pmrep_output = infa.helper.cmd_execute(command)
+        infa.helper.cmd_status(command, pmrep_output)
 
     def cleanup(self):
         """
@@ -128,28 +143,51 @@ class Pmrep(object):
 
         Args:
             None
-
-        Returns:
-            None
         """
         command = [self.pmrep, 'cleanup']
 
         pmrep_output = infa.helper.cmd_execute(command)
         infa.helper.cmd_status(command, pmrep_output)
 
-    def cleardeploymentgroup(self):
+    def cleardeploymentgroup(self, **params):
         """
-        Clear all objects from a deployment group.
+        Clear all objects from a deployment group while retaining the
+        group itself.
+        
+        Args:
+            p (str): deployment group name
         """
-        command = [self.pmrep, 'cleardeploymentgroup']
-        pass
+        opts_args = ['p']
+        opts_flags = []
+        
+        command = [self.pmrep, 'cleardeploymentgroup', '-f']
+        command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
+        
+        pmrep_output = infa.helper.cmd_execute(command)
+        infa.helper.cmd_status(command, pmrep_output)
 
-    def create(self):
+    def create(self, **params):
         """
         Creates the repository tables in the database.
+        
+        Note:
+            Requires the repository to be running in exclusive mode.
+            
+        Args:
+            u (str): domain user name
+            s (Optional[str]): domain user security domain. Default is Native.
+            p (str): domain password
+            g (bool): promote repository to global repository
+            v (bool): enable version control
         """
+        opts_args = ['u', 's', 'p']
+        opts_flags = ['g', 'v']
+        
         command = [self.pmrep, 'create']
-        pass
+        command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
+        
+        pmrep_output = infa.helper.cmd_execute(command)
+        infa.helper.cmd_status(command, pmrep_output)
 
     def createconnection(self):
         """
