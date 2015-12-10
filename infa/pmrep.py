@@ -93,12 +93,27 @@ class Pmrep(object):
         pmrep_output = infa.helper.cmd_execute(command)
         infa.helper.cmd_status(command, pmrep_output)
 
-    def changeowner(self):
+    def changeowner(self, **params):
         """
         Change the owner name for a global object.
+        
+        Args:
+            o (str): object type. Valid are 'folder', 'label', 'deploymentgroup',
+                'query' and 'connection'
+            t (Optional[str]): object subtype. Valid only for query and
+                connection objects
+            n (str): object name
+            u (str): new owner name
+            s (str): security domain
         """
+        opts_args = ['o', 't', 'n', 'u', 's']
+        opts_flags = []
+        
         command = [self.pmrep, 'changeowner']
-        pass
+        command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
+        
+        pmrep_output = infa.helper.cmd_execute(command)
+        infa.helper.cmd_status(command, pmrep_output)
 
     def checkin(self):
         """
@@ -546,9 +561,7 @@ class Pmrep(object):
         """
         command = [self.pmrep, 'updatestatistics']
         pmrep_output = infa.helper.cmd_execute(command)
-        if not "updatestatistics completed successfully." in pmrep_output:
-            print "\n".join(pmrep_output)
-            raise InfaPmrepError("failed to update statistics using %s" % " ".join(command))
+        infa.helper.cmd_status(command, pmrep_output)
 
     def updatetargprefix(self):
         """
