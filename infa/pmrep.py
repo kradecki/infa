@@ -29,9 +29,7 @@ class Pmrep(object):
         command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
 
         pmrep_output = infa.helper.cmd_execute(command)
-        if not "connect completed successfully." in pmrep_output:
-            print "\n".join(pmrep_output)
-            raise InfaPmrepError("connection to repository failed using %s" % " ".join(command))
+        infa.helper.cmd_status(command, pmrep_output)
 
     def addtodeploymentgroup(self):
         """
@@ -64,30 +62,36 @@ class Pmrep(object):
         if ('u' in params.keys()) and ('g' in params.keys()):
             raise InfaPmrepError("both [u] and [g] options supplied. Only one allowed.")
 
-        options_allowed = ['o', 't', 'n', 'u', 'g', 's', 'p']
-        command = [self.pmrep, 'assignpermission']
+        opts_args = ['o', 't', 'n', 'u', 'g', 's', 'p']
+        opts_flags = []
 
-        for key, value in params.iteritems():
-            if key in options_allowed:
-                command.extend(['-' + key, value])
-            else:
-                raise InfaPmrepError("unsupported assignpermission option: %s" % key)
+        command = [self.pmrep, 'assignpermission']
+        command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
 
         pmrep_output = infa.helper.cmd_execute(command)
-        if not "assignpermission completed successfully." in pmrep_output:
-            print "\n".join(pmrep_output)
-            raise InfaPmrepError("execution of assignpermission failed using %s" % " ".join(command))
+        infa.helper.cmd_status(command, pmrep_output)
 
     def backup(self, **params):
         """
         Backup the repository to the specified file.
+
+        Args:
+            o (str): output file name
+            d (Optional[str]): dscription
+            f (Optional[bool]): overwrite existing output file. Default False.
+            b (Optional[bool]): skip workflow and session logs. Default False
+            j (Optional[bool]): skip deployment group history. Default False.
+            q (Optional[bool]): skip MX data. Default False.
+            v (Optional[bool]): skip task statistics. Default False.
         """
         opts_args = ['o', 'd']
         opts_flags = ['f', 'b', 'j', 'q', 'v']
 
         command = [self.pmrep, 'backup']
         command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
-        print command
+
+        pmrep_output = infa.helper.cmd_execute(command)
+        infa.helper.cmd_status(command, pmrep_output)
 
     def changeowner(self):
         """
@@ -114,7 +118,9 @@ class Pmrep(object):
             None
         """
         command = [self.pmrep, 'cleanup']
+
         pmrep_output = infa.helper.cmd_execute(command)
+        infa.helper.cmd_status(command, pmrep_output)
 
     def cleardeploymentgroup(self):
         """
@@ -150,32 +156,23 @@ class Pmrep(object):
 
         Args (all to be supplied as kwargs):
             n (str): folder name
-            d (str): folder description
-            o (str): owner name
-            a (str): owner security domain
-            s (bool): shared folder (default false)
-            p (str): permissions
-            f (str): folder status
+            d (Optional[str]): folder description
+            o (Optional[str]): owner name. Default is user creating the folder
+            a (Optional[str]): owner security domain. Required for LDAP owners.
+                Default is Native.
+            s (Optional[bool]): shared folder. Default False
+            p (Optional[str]): permissions (unix style octal). By default the
+                the Repository Service assigns permissions.
+            f (Optional[str]): folder status
         """
-        options_allowed = ['n', 'o', 'a', 'p', 'f']
-        options_allowed_quote = ['d']
-        options_allowed_bool = ['s']
-        command = [self.pmrep, 'createfolder']
+        opts_args = ['n', 'd', 'o', 'a', 'p', 'f']
+        opts_flags = ['s']
 
-        for key, value in params.iteritems():
-            if key in options_allowed:
-                command.extend(['-' + key, value])
-            elif key in options_allowed_quote:
-                command.extend(['-' + key, '"' + value + '"'])
-            elif key in options_allowed_bool and value == True:
-                command.extend(['-' + key])
-            elif key not in options_allowed + options_allowed_quote + options_allowed_bool:
-                raise Exception("unsupported createfolder option: %s" % key)
+        command = [self.pmrep, 'createfolder']
+        command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
 
         pmrep_output = infa.helper.cmd_execute(command)
-        if not "createfolder completed successfully." in pmrep_output:
-            print "\n".join(pmrep_output)
-            raise Exception("failed to create label using %s" % " ".join(command))
+        infa.helper.cmd_status(command, pmrep_output)
 
     def createlabel(self, **params):
         """
@@ -184,21 +181,16 @@ class Pmrep(object):
 
         Args (all to be supplied as kwargs):
             a (str): name of label to be created in the repository
-            c (str): optional comment about the label
+            c (Optional[str]): comment about the label
         """
-        options_allowed = ['a', 'c']
-        command = [self.pmrep, 'createlabel']
+        opts_args = ['a', 'c']
+        opts_flags = []
 
-        for key, value in params.iteritems():
-            if key in options_allowed:
-                command.extend(['-' + key, '"' + value + '"'])
-            else:
-                raise Exception("unsupported createlabel option: %s" % key)
+        command = [self.pmrep, 'createlabel']
+        command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
 
         pmrep_output = infa.helper.cmd_execute(command)
-        if not "createlabel completed successfully." in pmrep_output:
-            print "\n".join(pmrep_output)
-            raise Exception("failed to create label using %s" % " ".join(command))
+        infa.helper.cmd_status(command, pmrep_output)
 
     def delete(self):
         """
@@ -224,20 +216,18 @@ class Pmrep(object):
     def deletefolder(self, **params):
         """
         Delete a folder from the repository.
-        """
-        options_allowed = ['n']
-        command = [self.pmrep, 'deletefolder']
 
-        for key, value in params.iteritems():
-            if key in options_allowed:
-                command.extend(['-' + key, value])
-            else:
-                raise Exception("unsupported deletefolder option: %s" % key)
+        Args:
+            n (str): folder name
+        """
+        opts_args = ['n']
+        opts_flags = []
+
+        command = [self.pmrep, 'deletefolder']
+        command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
 
         pmrep_output = infa.helper.cmd_execute(command)
-        if not "deletefolder completed successfully." in pmrep_output:
-            print "\n".join(pmrep_output)
-            raise Exception("failed to delete folder using %s" % " ".join(command))
+        infa.helper.cmd_status(command, pmrep_output)
 
     def deletelabel(self, **params):
         """
@@ -249,19 +239,13 @@ class Pmrep(object):
         Args (all to be supplied as kwargs):
             a (str): name of the label to be deleted in the repository
         """
-        options_allowed = ['a']
-        command = [self.pmrep, 'deletelabel', '-f']
+        opts_args = ['a']
 
-        for key, value in params.iteritems():
-            if key in options_allowed:
-                command.extend(['-' + key, '"' + value + '"'])
-            else:
-                raise Exception("unsupported delete option: %s" % key)
+        command = [self.pmrep, 'deletelabel', '-f']
+        command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
 
         pmrep_output = infa.helper.cmd_execute(command)
-        if not "deletelabel completed successfully." in pmrep_output:
-            print "\n".join(pmrep_output)
-            raise Exception("failed to delete label using %s" % " ".join(command))
+        infa.helper.cmd_status(command, pmrep_output)
 
     def deleteobject(self):
         """
@@ -308,10 +292,16 @@ class Pmrep(object):
     def listconnections(self):
         """
         List all connection objects in the repository and their respective connection types.
+
+        Args:
+            None
         """
+        column_separator = ','
         command = [self.pmrep, 'listconnections', '-t']
+
         pmrep_output = infa.helper.cmd_execute(command)
-        return infa.helper.format_output(pmrep_output, ',')
+        infa.helper.cmd_status(command, pmrep_output)
+        return infa.helper.format_output(pmrep_output, column_separator)
 
     def listobjectdependencies(self):
         """
@@ -328,31 +318,48 @@ class Pmrep(object):
             o (str): object type
             t (str): object subtype
             f (str): folder name
-            c (str): column separator
             r (str): end-of-record separatr
             l (str): end-of-listing separator
             s (str): dbd separator
 
             Refer to Informatica Command reference Handbook for details.
-        """
-        options_allowed = ['o', 't', 'f', 'c', 'r', 'l', 's']
-        command = [self.pmrep, 'listobjects']
 
-        for key, value in params.iteritems():
-            if key in options_allowed:
-                command.extend(['-' + key, value.lower()])
-            else:
-                raise Exception("unsupported listobjects option: %s" % key)
+        Returns:
+            List of Lists
+        """
+        opts_args = ['o', 't', 'f', 'r', 'l', 's']
+        opts_flags = []
+
+        column_separator = '<=#CS#=>'
+        command = [self.pmrep, 'listobjects', '-c', column_separator]
+        command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
 
         pmrep_output = infa.helper.cmd_execute(command)
-        return infa.helper.format_output(pmrep_output, ' ')
+        infa.helper.cmd_status(command, pmrep_output)
+        return infa.helper.format_output(pmrep_output, column_separator)
 
-    def listtablesbysess(self):
+    def listtablesbysess(self, **params):
         """
         Return a list of sources or targets used in a session.
+
+        Args:
+            f (str): folder name
+            s (str): session name (non-reusable must include workflow name)
+            t (str): object type listed ('session' or 'target')
+
+        Note:
+            If a mapping contains a mapplet, its name will also be returned
         """
+        opts_args = ['f', 's', 't']
+        opts_flags = []
+
+        column_separator = '.'
         command = [self.pmrep, 'listtablesbysess']
-        pass
+        command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
+
+        pmrep_output = infa.helper.cmd_execute(command)
+        infa.helper.cmd_status(command, pmrep_output)
+        return infa.helper.format_output(pmrep_output, column_separator)
 
     def listuserconnections(self):
         """
