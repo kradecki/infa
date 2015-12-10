@@ -196,12 +196,27 @@ class Pmrep(object):
         command = [self.pmrep, 'createconnection']
         pass
 
-    def createdeploymentgroup(self):
+    def createdeploymentgroup(self, **params):
         """
         Create a static or dynamic deployment group.
+        
+        Args (all to be supplied as kwargs):
+            p (str): Required. Deployment group name.
+            t (str): Optional. Deployment group type ('static' or 'dynamic').
+                Default is static.
+            q (str): Required if the deployment groupy is dynamic. Query name.
+            u (str): Required if the deployment groupy is dynamic. Valid values 
+                are 'shared' or 'personal'.
+            c (str): Optional. Comments
         """
+        opts_args = ['p', 't', 'q', 'u', 'c']
+        opts_flags = []
+        
         command = [self.pmrep, 'createdeploymentgroup']
-        pass
+        command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
+        
+        pmrep_output = infa.helper.cmd_execute(command)
+        infa.helper.cmd_status(command, pmrep_output)
 
     def createfolder(self, **params):
         """
