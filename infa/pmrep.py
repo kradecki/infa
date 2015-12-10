@@ -51,13 +51,16 @@ class Pmrep(object):
         group, or the Others default group.
 
         Args (all to be supplied as kwargs):
-            o (str): object type
-            t (str): object subtype
-            n (str): object name
-            u (str): user name
-            g (str): group name
-            s (str): security domain
-            p (str): permission (r, w, x or a combination of those)
+            o (str): Required. Object type.
+            t (str): Optional. Object subtype, relevant only for connection
+                object or query.
+            n (str): Required. Object name.
+            u (str): Required if [g] is not used. User name.
+            g (str): Required if [u] is not used. Group name.
+            s (str): Required only is LDAP authentication is in use. Security domain.
+                Default is Native.
+            p (str): Required. Permissions to be added, removed or updated.
+                Valid values are 'r', 'w', 'x' or a combination of those.
         """
         if ('u' in params.keys()) and ('g' in params.keys()):
             raise InfaPmrepError("both [u] and [g] options supplied. Only one allowed.")
@@ -75,14 +78,14 @@ class Pmrep(object):
         """
         Backup the repository to the specified file.
 
-        Args:
-            o (str): output file name
-            d (Optional[str]): dscription
-            f (Optional[bool]): overwrite existing output file. Default False.
-            b (Optional[bool]): skip workflow and session logs. Default False
-            j (Optional[bool]): skip deployment group history. Default False.
-            q (Optional[bool]): skip MX data. Default False.
-            v (Optional[bool]): skip task statistics. Default False.
+        Args (all to be supplied as kwargs):
+            o (str): Required. Output file name.
+            d (str): Optional. Description.
+            f (bool): Optional. Overwrite existing output file. Default is False.
+            b (bool): Optional. Skip workflow and session logs. Default is False
+            j (bool): Optional. Skip deployment group history. Default is False.
+            q (bool): Optional. Skip MX data. Default is False.
+            v (bool): Optional. Skip task statistics. Default is False.
         """
         opts_args = ['o', 'd']
         opts_flags = ['f', 'b', 'j', 'q', 'v']
@@ -98,13 +101,14 @@ class Pmrep(object):
         Change the owner name for a global object.
         
         Args:
-            o (str): object type. Valid are 'folder', 'label', 'deploymentgroup',
-                'query' and 'connection'
-            t (Optional[str]): object subtype. Valid only for query and
-                connection objects
-            n (str): object name
-            u (str): new owner name
-            s (str): security domain
+            o (str): Required. Object type. Valid values are 'folder', 'label', 
+                'deploymentgroup', 'query' and 'connection'.
+            t (str): Optional. Object subtype, relevant only for connection
+                object or query.
+            n (str): Required. Object name.
+            u (str): Required. New owner name.
+            s (str): Required only is LDAP authentication is in use. Security domain.
+                Default is Native.
         """
         opts_args = ['o', 't', 'n', 'u', 's']
         opts_flags = []
@@ -120,13 +124,13 @@ class Pmrep(object):
         Check in an object that has been checked out.
         
         Args:
-            o (str): object type
-            t (Optional[str]): object subtype
-            n (str): object name
-            f (str): folder name
-            c (Optional[str]): comments
-            s (Optional[str]): dbd separator. Relevnt if ODBC source has a period ('.')
-                in the name
+            o (str): Required. Object type.
+            t (str): Required for task or transformation type. Object subtype.
+            n (str): Required. Object name.
+            f (str): Required. Folder name.
+            c (str): Optional. Comments.
+            s (str): Optional. DBD separator. Relevant if ODBC source has a 
+                period ('.') in its name.
         """
         opts_args = ['o', 't', 'n', 'f', 'c', 's']
         opts_flags = []
@@ -155,7 +159,11 @@ class Pmrep(object):
         group itself.
         
         Args:
-            p (str): deployment group name
+            p (str): Required. Deployment group name.
+        
+        Note:
+            The '-f' (force) flag is automatically submitted to avoid user
+            interaction.
         """
         opts_args = ['p']
         opts_flags = []
@@ -174,11 +182,13 @@ class Pmrep(object):
             Requires the repository to be running in exclusive mode.
             
         Args:
-            u (str): domain user name
-            s (Optional[str]): domain user security domain. Default is Native.
-            p (str): domain password
-            g (bool): promote repository to global repository
-            v (bool): enable version control
+            u (str): Required. Domain user name.
+            s (str): Required only is LDAP authentication is in use. Security domain.
+                Default is Native.
+            p (str): Required. Domain password.
+            g (bool): Optional. Promote repository to global repository.
+                Default is False.
+            v (bool): Optional. Enable version control. Default is False.
         """
         opts_args = ['u', 's', 'p']
         opts_flags = ['g', 'v']
