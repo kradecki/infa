@@ -99,9 +99,9 @@ class Pmrep(object):
     def changeowner(self, **params):
         """
         Change the owner name for a global object.
-        
-        Args:
-            o (str): Required. Object type. Valid values are 'folder', 'label', 
+
+        Args (all to be supplied as kwargs):
+            o (str): Required. Object type. Valid values are 'folder', 'label',
                 'deploymentgroup', 'query' and 'connection'.
             t (str): Optional. Object subtype, relevant only for connection
                 object or query.
@@ -112,32 +112,32 @@ class Pmrep(object):
         """
         opts_args = ['o', 't', 'n', 'u', 's']
         opts_flags = []
-        
+
         command = [self.pmrep, 'changeowner']
         command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
-        
+
         pmrep_output = infa.helper.cmd_execute(command)
         infa.helper.cmd_status(command, pmrep_output)
 
     def checkin(self, **params):
         """
         Check in an object that has been checked out.
-        
-        Args:
+
+        Args (all to be supplied as kwargs):
             o (str): Required. Object type.
             t (str): Required for task or transformation type. Object subtype.
             n (str): Required. Object name.
             f (str): Required. Folder name.
             c (str): Optional. Comments.
-            s (str): Optional. DBD separator. Relevant if ODBC source has a 
+            s (str): Optional. DBD separator. Relevant if ODBC source has a
                 period ('.') in its name.
         """
         opts_args = ['o', 't', 'n', 'f', 'c', 's']
         opts_flags = []
-        
+
         command = [self.pmrep, 'checkin']
         command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
-        
+
         pmrep_output = infa.helper.cmd_execute(command)
         infa.helper.cmd_status(command, pmrep_output)
 
@@ -157,31 +157,31 @@ class Pmrep(object):
         """
         Clear all objects from a deployment group while retaining the
         group itself.
-        
-        Args:
+
+        Args (all to be supplied as kwargs):
             p (str): Required. Deployment group name.
-        
+
         Note:
-            The '-f' (force) flag is automatically submitted to avoid user
+            The [-f] flag (force) is automatically submitted to avoid user
             interaction.
         """
         opts_args = ['p']
         opts_flags = []
-        
+
         command = [self.pmrep, 'cleardeploymentgroup', '-f']
         command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
-        
+
         pmrep_output = infa.helper.cmd_execute(command)
         infa.helper.cmd_status(command, pmrep_output)
 
     def create(self, **params):
         """
         Creates the repository tables in the database.
-        
+
         Note:
             Requires the repository to be running in exclusive mode.
-            
-        Args:
+
+        Args (all to be supplied as kwargs):
             u (str): Required. Domain user name.
             s (str): Required only is LDAP authentication is in use. Security domain.
                 Default is Native.
@@ -192,10 +192,10 @@ class Pmrep(object):
         """
         opts_args = ['u', 's', 'p']
         opts_flags = ['g', 'v']
-        
+
         command = [self.pmrep, 'create']
         command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
-        
+
         pmrep_output = infa.helper.cmd_execute(command)
         infa.helper.cmd_status(command, pmrep_output)
 
@@ -209,22 +209,22 @@ class Pmrep(object):
     def createdeploymentgroup(self, **params):
         """
         Create a static or dynamic deployment group.
-        
+
         Args (all to be supplied as kwargs):
             p (str): Required. Deployment group name.
             t (str): Optional. Deployment group type ('static' or 'dynamic').
                 Default is static.
             q (str): Required if the deployment groupy is dynamic. Query name.
-            u (str): Required if the deployment groupy is dynamic. Valid values 
+            u (str): Required if the deployment groupy is dynamic. Valid values
                 are 'shared' or 'personal'.
             c (str): Optional. Comments
         """
         opts_args = ['p', 't', 'q', 'u', 'c']
         opts_flags = []
-        
+
         command = [self.pmrep, 'createdeploymentgroup']
         command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
-        
+
         pmrep_output = infa.helper.cmd_execute(command)
         infa.helper.cmd_status(command, pmrep_output)
 
@@ -295,7 +295,7 @@ class Pmrep(object):
         """
         Delete a folder from the repository.
 
-        Args:
+        Args (all to be supplied as kwargs):
             n (str): folder name
         """
         opts_args = ['n']
@@ -420,13 +420,14 @@ class Pmrep(object):
         """
         Return a list of sources or targets used in a session.
 
-        Args:
+        Args (all to be supplied as kwargs):
             f (str): folder name
             s (str): session name (non-reusable must include workflow name)
             t (str): object type listed ('session' or 'target')
 
         Note:
-            If a mapping contains a mapplet, its name will also be returned
+            If a mapping contains a mapplet, its name will also be returned as
+            the first element of a list holding the session's name.
         """
         opts_args = ['f', 's', 't']
         opts_flags = []
