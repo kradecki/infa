@@ -6,14 +6,18 @@ import subprocess
 
 def cmd_prepare(params, opts_args, opts_flags):
     """
-    Prepare the command parameters
+    Prepare the command line parameters to be passed to an external
+    program.
+    
+    The passed parameters may either require additional arguments, or serve
+    as plain flags and should be handled appropriately.
 
     Args:
         params (str): parameters supplied
-        opts_args (List[str]): list of command line options that require 
-            arguments
-        opts_flags (List[str]): list of command line options without 
-            arguments
+        opts_args (list[str]): list of command line options that require 
+            additional arguments
+        opts_flags (list[str]): list of command line options without 
+            additional arguments (regular flags)
 
     Returns:
         List
@@ -30,15 +34,16 @@ def cmd_prepare(params, opts_args, opts_flags):
 
 def cmd_execute(command):
     """
-    Execute a command and return the output as an array of lines.
+    Execute an external command and return its output as a list where 
+    each list element corresponds to one STDOUT line returned by the 
+    command.
 
     Args:
         command (list): OS command call formatted for the subprocess'
             Popen
 
     Returns:
-        List, where each element corresponds to a STDOUT line returned
-            by an external program
+        List
     """
     command_output = subprocess.Popen(
         command,
@@ -49,11 +54,17 @@ def cmd_execute(command):
 
 def cmd_status(command, command_output):
     """
-    Check if the command output contains a string 'completed successfully'.
+    Check if the command has been successfully executed.
+    
+    A command is considered be executed successfully if the output 
+    stream contains a string 'completed successfully'.
 
     Args:
         command (list): executed command
-        command_output(list): output of that command 
+        command_output(list): output of that command
+        
+    Returns:
+        None
     """
     if not any('completed successfully' in line for line in command_output):
         print "\n".join(command_output)
@@ -61,7 +72,8 @@ def cmd_status(command, command_output):
 
 def format_output(command_output, field_separator):
     """
-    Cleanse output and format it to an API-friendly list
+    Cleanse the external commands STDOUT stream and format it 
+    to an API-friendly list.
 
     Args:
         command_output(list): array of lines returned by the called
