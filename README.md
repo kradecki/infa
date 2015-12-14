@@ -94,18 +94,18 @@ _infa_ is a work-in-progres. Below is an overview of features currently implemen
 
 | pmrep Command                       | Pmrep Class method                 | Implemented? | Comment  |
 | ------------------------------------|------------------------------------|:------------:|----------|
-| AddToDeploymentGroup                |                                    | ✘            |          |
-| ApplyLabel                          |                                    | ✘            |          |
+| AddToDeploymentGroup                | addtodeploymentgroup               | ✅            |          |
+| ApplyLabel                          | applylabel                         | ✅            |          |
 | AssignPermission                    | assignpermission                   | ✅            |          |
-| BackUp                              |                                    | ✘            |          |
-| ChangeOwner                         |                                    | ✘            |          |
-| CheckIn                             |                                    | ✘            |          |
+| BackUp                              | backup                             | ✅            |          |
+| ChangeOwner                         | changeowner                        | ✅            |          |
+| CheckIn                             | checkin                            | ✅            |          |
 | CleanUp                             | cleanup                            | ✅            |          |
-| ClearDeploymentGroup                |                                    | ✘            |          |
+| ClearDeploymentGroup                | cleardeploymentgroup               | ✅            |          |
 | Connect                             | \_\_init\_\_                       | ✅            |Used implicitly when class instance is created|
-| Create                              |                                    | ✘            |          |
-| CreateConnection                    |                                    | ✘            |          |
-| CreateDeploymentGroup               |                                    | ✘            |          |
+| Create                              | create                             | ✅            |          |
+| CreateConnection                    | createconnection                   | ✅            |          |
+| CreateDeploymentGroup               | createdeploymentgroup              | ✅            |          |
 | CreateFolder                        | createfolder                       | ✅            |          |
 | CreateLabel                         | createlabel                        | ✅            |          |
 | Delete                              |                                    | ✘            |          |
@@ -125,7 +125,7 @@ _infa_ is a work-in-progres. Below is an overview of features currently implemen
 | ListConnections                     | listconnections                    | ✅            |          |
 | ListObjectDependencies              |                                    | ✘            |          |
 | ListObjects                         | listobjects                        | ✅            |          |
-| ListTablesBySess                    |                                    | ✘            |          |
+| ListTablesBySess                    | listtablesbysess                   | ✅            |          |
 | ListUserConnections                 |                                    | ✘            |          |
 | MassUpdate                          |                                    | ✘            |          |
 | ModifyFolder                        |                                    | ✘            |          |
