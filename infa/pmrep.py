@@ -31,19 +31,63 @@ class Pmrep(object):
         pmrep_output = infa.helper.cmd_execute(command)
         infa.helper.cmd_status(command, pmrep_output)
 
-    def addtodeploymentgroup(self):
+    def addtodeploymentgroup(self, **params):
         """
         Add objects to a deployment group.
+        
+        Args (all to be supplied as kwargs):
+            p (str): Required. Deployment group name.
+            n (str): Required if adding a specific object. Object name.
+            o (str): Required if adding a specific object. Object type.
+            t (str): Required when using valid subtypes. Object subtype.
+            v (str): Optional. Version number. Default is latest version.
+            f (str): Required if adding a specific object. Folder name.
+            i (str): Required if not using [n], [o] and [f]. Persistant
+                input file.
+            d (str): Optional. DBD Separator.
+            
+            Refer to Informatica Command reference Handbook for details.
         """
+        opts_args = ['p', 'n', 'o', 't', 'v', 'f', 'i', 'd']
+        opts_flags = []
+        
         command = [self.pmrep, 'addtodeploymentgroup']
-        pass
+        command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
+        
+        pmrep_output = infa.helper.cmd_execute(command)
+        infa.helper.cmd_status(command, pmrep_output)
 
-    def applylabel(self):
+    def applylabel(self, **params):
         """
         Apply a label to an object or a set of objects in a folder.
+        
+        Args (all to be supplied as kwargs):
+            a (str): Required. Label name.
+            n (str): Required if adding a specific object. Object name.
+            o (str): Required if adding a specific object. Object type.
+            t (str): Required when using valid subtypes. Object subtype.
+            v (str): Optional. Version number. Default is latest version.
+            f (str): Optional. Folder name.
+            i (str): Required if not using [n], [o] and [f]. Persistant
+                input file.
+            d (str): Optional. Dependency object types.
+            p (str): Optional. Dependency direction.
+            s (bool): Optional. Include PK-FK depenency objects.
+            g (bool): Optional. Find dependencies across repositories.
+            m (bool): Optional. Move label to the latest version.
+            c (str): Optional. Comments.
+            e (str): Optional. DBD Separator.
+        
+            Refer to Informatica Command reference Handbook for details.
         """
+        opts_args = ['a', 'n', 'o', 't', 'v', 'f', 'i', 'd', 'p', 'c', 'e']
+        opts_flags = ['s', 'g', 'm']
+        
         command = [self.pmrep, 'applylabel']
-        pass
+        command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
+        
+        pmrep_output = infa.helper.cmd_execute(command)
+        infa.helper.cmd_status(command, pmrep_output)
 
     def assignpermission(self, **params):
         """
@@ -61,10 +105,9 @@ class Pmrep(object):
                 Default is Native.
             p (str): Required. Permissions to be added, removed or updated.
                 Valid values are 'r', 'w', 'x' or a combination of those.
+            
+            Refer to Informatica Command reference Handbook for details.
         """
-        if ('u' in params.keys()) and ('g' in params.keys()):
-            raise InfaPmrepError("both [u] and [g] options supplied. Only one allowed.")
-
         opts_args = ['o', 't', 'n', 'u', 'g', 's', 'p']
         opts_flags = []
 
@@ -86,6 +129,8 @@ class Pmrep(object):
             j (bool): Optional. Skip deployment group history. Default is False.
             q (bool): Optional. Skip MX data. Default is False.
             v (bool): Optional. Skip task statistics. Default is False.
+            
+            Refer to Informatica Command reference Handbook for details.
         """
         opts_args = ['o', 'd']
         opts_flags = ['f', 'b', 'j', 'q', 'v']
@@ -109,6 +154,8 @@ class Pmrep(object):
             u (str): Required. New owner name.
             s (str): Required only is LDAP authentication is in use. Security domain.
                 Default is Native.
+            
+            Refer to Informatica Command reference Handbook for details.
         """
         opts_args = ['o', 't', 'n', 'u', 's']
         opts_flags = []
@@ -131,6 +178,8 @@ class Pmrep(object):
             c (str): Optional. Comments.
             s (str): Optional. DBD separator. Relevant if ODBC source has a
                 period ('.') in its name.
+            
+            Refer to Informatica Command reference Handbook for details.
         """
         opts_args = ['o', 't', 'n', 'f', 'c', 's']
         opts_flags = []
@@ -147,6 +196,8 @@ class Pmrep(object):
 
         Args:
             None
+            
+            Refer to Informatica Command reference Handbook for details.
         """
         command = [self.pmrep, 'cleanup']
 
@@ -160,6 +211,8 @@ class Pmrep(object):
 
         Args (all to be supplied as kwargs):
             p (str): Required. Deployment group name.
+            
+            Refer to Informatica Command reference Handbook for details.
 
         Note:
             The [-f] flag (force) is automatically submitted to avoid user
@@ -189,6 +242,8 @@ class Pmrep(object):
             g (bool): Optional. Promote repository to global repository.
                 Default is False.
             v (bool): Optional. Enable version control. Default is False.
+            
+            Refer to Informatica Command reference Handbook for details.
         """
         opts_args = ['u', 's', 'p']
         opts_flags = ['g', 'v']
@@ -199,12 +254,42 @@ class Pmrep(object):
         pmrep_output = infa.helper.cmd_execute(command)
         infa.helper.cmd_status(command, pmrep_output)
 
-    def createconnection(self):
+    def createconnection(self, **params):
         """
         Create a source or target connection in the repository.
+        
+        Args (all to be supplied as kwargs):
+            s (str): Required. Connection type.
+            n (str): Required. Connection name.
+            u (str): Required for some connection types. User name.
+            p (str): Required for some connection types. Password.
+            P (str): Optional. Password environment variable.
+            K (str): Optional. Connection to the Kerberos server.
+            c (str): Required. Connect string.
+            l (str): Required for some connection types. Code page.
+            r (str): Optional for Oracle connections. Rollback segment.
+            e (str): Optional. Connection environment SQL.
+            f (str): Optional. Transaction environment SQL.
+            z (str): Optional for Sybase ASE and MSSQL. Packet size.
+            b (str): Optional for Sybase ASE and MSSQL. Database name.
+            v (str): Optional for Sybase ASE and MSSQL. Database name.
+            d (str): Optional for MSSQL. Domain name.
+            t (bool): Optional for MSSQL. Integration Service uses Windows
+                authentication to access MSSQL database.
+            a (str): Optional for Teradata. ODBC data source name.
+            x (bool): Optional. Enable enhanced security.
+            k (str): Optional. Enable user defined connection attributes.
+        
+            Refer to Informatica Command reference Handbook for details.
         """
+        opts_args = ['s', 'n', 'u', 'p', 'P', 'K', 'c', 'l', 'r', 'e', 'f', 'z', 'b', 'v', 'd', 'a', 'k']
+        opts_flags = ['t', 'x']
+        
         command = [self.pmrep, 'createconnection']
-        pass
+        command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
+
+        pmrep_output = infa.helper.cmd_execute(command)
+        infa.helper.cmd_status(command, pmrep_output)
 
     def createdeploymentgroup(self, **params):
         """
