@@ -31,6 +31,18 @@ class Pmrep(object):
         pmrep_output = infa.helper.cmd_execute(command)
         infa.helper.cmd_status(command, pmrep_output)
 
+    def __default_io_command(self, pmrep_command, opts_args, opts_flags, params, column_separator='.'):
+        command = [self.pmrep]
+        if isinstance(pmrep_command, list):
+         command.extend(pmrep_command)
+        else:
+         command.append(pmrep_command)
+
+        command.extend(infa.helper.cmd_prepare(params, opts_args, opts_flags))
+        pmrep_output = infa.helper.cmd_execute(command)
+        infa.helper.cmd_status(command, pmrep_output)
+        return infa.helper.format_output(pmrep_output, column_separator)
+
     def addtodeploymentgroup(self, **params):
         """
         Add objects to a deployment group.
@@ -466,12 +478,12 @@ class Pmrep(object):
         infa.helper.cmd_status(command, pmrep_output)
         return infa.helper.format_output(pmrep_output, column_separator)
 
-    def listobjectdependencies(self):
+    def listobjectdependencies(self, **params):
         """
         List dependency objects for reusable and non-reusable objects.
         """
-        command = [self.pmrep, 'listobjectdependencies']
-        pass
+        col_sep = '<=#CS#=>'
+        return self.__default_io_command(['listobjectdependencies', '-c', col_sep], ['n', 'o', 't', 'v', 'f', 'i', 'd', 'p', 'u', 'r', 'l', 'b', 'e'], ['s', 'g', 'a'], params, col_sep)
 
     def listobjects(self, **params):
         """
@@ -558,21 +570,22 @@ class Pmrep(object):
         pass
 
 
-    def objectexport(self):
+    def objectexport(self, **params):
         """
         Exports objects to an XML file defined by the powrmart.dtd file.
         """
-        command = [self.pmrep, 'objectexport']
-        pass
+        return self.__default_io_command('objectexport', ['n', 'o', 't', 'v', 'f', 'i', 'u', 'l', 'e'], ['m', 's', 'b', 'r'], params)
 
-
-    def objectimport(self):
+    def objectimport(self, src_folder, src_repo, tgt_folder, tgt_repo, **params):
         """
         Imports objects from an XML file.
         """
-        command = [self.pmrep, 'objectimport']
-        pass
+        if 'c' not in params:
+            infa.helper.create_import_control_xml('impcntl.xml', src_folder, src_repo, tgt_folder, tgt_repo, 
+                 dtd=os.path.join(os.path.dirname(self.pmrep), 'impcntl.dtd'))
+            params['c'] = 'impcntl.xml'
 
+        return self.__default_io_command('objectimport', ['i', 'c', 'l'], ['p'], params)
 
     def purgeversion(self):
         """
@@ -733,12 +746,11 @@ class Pmrep(object):
         command = [self.pmrep, 'uninstallabapprogram']
         pass
 
-    def validate(self):
+    def validate(self, **params):
         """
         Validates objects.
         """
-        command = [self.pmrep, 'validate']
-        pass
+        return self.__default_io_command('validate', ['n', 'o', 'v', 'f', 'i', 'm', 'p', 'u'], ['s', 'k', 'a', 'b'], params)
 
     def version(self):
         """

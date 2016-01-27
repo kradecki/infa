@@ -2,7 +2,6 @@
 This module contains generic functions for handling communication with
 Informatica programs and process their output.
 """
-import subprocess
 
 def cmd_prepare(params, opts_args, opts_flags):
     """
@@ -45,6 +44,7 @@ def cmd_execute(command):
     Returns:
         List
     """
+    import subprocess  # import only on demand, as it is slow on cygwin
     command_output = subprocess.Popen(
         command,
         stdout=subprocess.PIPE,
@@ -97,3 +97,30 @@ def format_output(command_output, field_separator):
         item.strip().split(field_separator) for item in command_output
         if item and not any(s in item for s in ignore_lines) 
     ]
+
+def create_import_control_xml(xml_output, src_folder, src_repo, tgt_folder, tgt_repo, dtd):
+    """
+    Creates a control xml file for the objectimport command.
+    For now the strategy is simply to replace all objects.
+    Raises an exception if the file cannot be created.
+
+    Args:
+        src_folder(str): name of the source folder
+        src_repo(str): name of the source repository
+        tgt_folder(str): name of the target folder
+        tgt_repo(str): name of the target repository
+
+    Returns:
+        Nothing
+    """
+    template = """<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE IMPORTPARAMS SYSTEM "{dtd}">
+<IMPORTPARAMS CHECKIN_AFTER_IMPORT="NO">
+<FOLDERMAP SOURCEFOLDERNAME="{src_folder}" SOURCEREPOSITORYNAME="{src_repo}" TARGETFOLDERNAME="{tgt_folder}" TARGETREPOSITORYNAME="{tgt_repo}"/>
+<RESOLVECONFLICT>
+<TYPEOBJECT OBJECTTYPENAME = "ALL" RESOLUTION="REPLACE"/>
+</RESOLVECONFLICT>
+</IMPORTPARAMS>""".format(src_folder=src_folder, src_repo=src_repo, tgt_folder=tgt_folder, tgt_repo=tgt_repo, dtd=dtd)
+    with open(xml_output, 'w') as f:
+        f.write(template)
+
