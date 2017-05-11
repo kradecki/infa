@@ -512,9 +512,7 @@ class Pmrep(object):
         command.extend(infa3.helper.cmd_prepare(params, opts_args, opts_flags))
 
         pmrep_output = infa3.helper.cmd_execute(command)
-        print(pmrep_output)
         infa3.helper.cmd_status(command, pmrep_output)
-        print(infa3.helper.format_output(pmrep_output, column_separator))
         return infa3.helper.format_output(pmrep_output, column_separator)
 
     def listtablesbysess(self, **params):
