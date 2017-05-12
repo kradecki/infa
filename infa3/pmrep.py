@@ -376,12 +376,21 @@ class Pmrep(object):
         command = [self.pmrep, 'delete']
         pass
 
-    def deleteconnection(self):
+    def deleteconnection(self, **params):
         """
         Delete a relational connection from the repository.
+
+        Args (all to be supplied as kwargs):
+            n (str): connection name
+            s (Optional[str]): connection type application, relational, ftp, loader or queue
+
         """
-        command = [self.pmrep, 'deleteconnection']
-        pass
+        opts_args = ['n', 's']
+        opts_flags = []
+        command = [self.pmrep, 'deleteconnection', '-f']
+        command.extend(infa3.helper.cmd_prepare(params, opts_args, opts_flags))
+        pmrep_output = infa3.helper.cmd_execute(command)
+        infa3.helper.cmd_status(command, pmrep_output)
 
     def deletedeploymentgroup(self):
         """
