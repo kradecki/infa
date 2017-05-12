@@ -586,6 +586,11 @@ class Pmrep(object):
     def objectimport(self, src_folder, src_repo, tgt_folder, tgt_repo, **params):
         """
         Imports objects from an XML file.
+        Args (all to be supplied as kwargs):
+            i (str): imput xml file name
+            c (str): control file name
+            l (Optional[str]): log file name
+            p (Optional[str]): retain persistent value
         """
         if 'c' not in params:
             infa3.helper.create_import_control_xml('impcntl.xml', src_folder, src_repo, tgt_folder, tgt_repo,

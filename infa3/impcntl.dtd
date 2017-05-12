@@ -1,0 +1,76 @@
+<!-- Informatica Object Import Control DTD Grammar - Version 8.0 -->
+
+<!--IMPORTPARAMS This inputs the options and inputs required for import operation -->
+<!--CHECKIN_AFTER_IMPORT Check in objects on successful import operation -->
+<!--CHECKIN_COMMENTS Check in comments -->
+<!--APPLY_LABEL_NAME Apply the given label name on imported objects -->
+<!--RETAIN_GENERATED_VALUE Retain existing sequence generator, normalizer and XML DSQ current values in the destination -->
+<!--COPY_SAP_PROGRAM Copy SAP program information into the target repository -->
+<!--APPLY_DEFAULT_CONNECTION Apply the default connection when a connection used by a session does not exist in the target repository -->
+<!ELEMENT IMPORTPARAMS (FOLDERMAP*, TYPEFILTER*, RESOLVECONFLICT?)>
+<!ATTLIST IMPORTPARAMS
+        CHECKIN_AFTER_IMPORT	  (YES | NO) "NO"
+        CHECKIN_COMMENTS          CDATA      #IMPLIED
+        APPLY_LABEL_NAME          CDATA      #IMPLIED
+        RETAIN_GENERATED_VALUE    (YES | NO) "YES"
+        COPY_SAP_PROGRAM          (YES | NO) "YES"
+        APPLY_DEFAULT_CONNECTION  (YES | NO) "NO"
+>
+
+<!--FOLDERMAP matches the folders in the imported file with the folders in the target repository -->
+<!ELEMENT FOLDERMAP EMPTY>
+<!ATTLIST FOLDERMAP
+        SOURCEFOLDERNAME     CDATA    #REQUIRED
+	    SOURCEREPOSITORYNAME CDATA    #REQUIRED
+        TARGETFOLDERNAME     CDATA    #REQUIRED
+        TARGETREPOSITORYNAME CDATA    #REQUIRED
+>
+
+<!--Import will only import the objects in the selected types in TYPEFILTER node -->
+<!--TYPENAME type name to import. This should comforming to the element name in powermart.dtd, e.g. SOURCE, TARGET and etc.-->
+<!ELEMENT TYPEFILTER EMPTY>
+<!ATTLIST TYPEFILTER
+        TYPENAME    CDATA    #REQUIRED
+>
+
+<!--RESOLVECONFLICT allows to specify resolution for conflicting objects during import. The combination of specified child nodes can be supplied -->
+<!ELEMENT RESOLVECONFLICT (LABELOBJECT | QUERYOBJECT | TYPEOBJECT | SPECIFICOBJECT)*>
+
+<!--LABELOBJECT allows objects in the target with label name to apply replace/reuse upon conflict -->
+<!ELEMENT LABELOBJECT EMPTY>
+<!ATTLIST LABELOBJECT
+        LABELNAME	CDATA    #REQUIRED
+        RESOLUTION	(REPLACE | REUSE | RENAME)    #REQUIRED
+>
+
+<!--QUERYOBJECT allows objects result from a query to apply replace/reuse upon conflict -->
+<!ELEMENT QUERYOBJECT EMPTY>
+<!ATTLIST QUERYOBJECT
+        QUERYNAME	CDATA    #REQUIRED
+	RESOLUTION	(REPLACE | REUSE | RENAME)    #REQUIRED
+>
+
+<!--TYPEOBJECT allows objects of certain type to apply replace/reuse upon conflict-->
+<!ELEMENT TYPEOBJECT EMPTY>
+<!ATTLIST TYPEOBJECT
+	OBJECTTYPENAME	CDATA    #REQUIRED
+	RESOLUTION	(REPLACE | REUSE | RENAME)    #REQUIRED 
+>
+
+<!--SPECIFICOBJECT allows a particular object(name, typename etc.) to apply replace/reuse upon conflict -->
+<!--NAME Object name-->
+<!--EXTRANAME Source DBD name - required for source object to identify uniquely-->
+<!--OBJECTTYPENAME Object type name-->
+<!--FOLDERNAME Folder which the object belongs to-->
+<!--REPOSITORYNAME Repository name that this object belongs to-->
+<!--RESOLUTION Resolution to apply for the object in case of conflict-->
+<!ELEMENT SPECIFICOBJECT EMPTY>
+<!ATTLIST SPECIFICOBJECT 
+        NAME           CDATA    #REQUIRED
+        DBDNAME        CDATA    #IMPLIED
+        OBJECTTYPENAME CDATA    #REQUIRED
+        FOLDERNAME     CDATA    #REQUIRED
+        REPOSITORYNAME CDATA    #REQUIRED
+        RESOLUTION   (REPLACE | REUSE | RENAME)    #REQUIRED
+>
+
