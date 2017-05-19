@@ -552,15 +552,14 @@ class Pmrep(object):
 
     def killuserconnection(self, **params):
         """
-        Return a list of sources or targets used in a session.
-
+        Terminates user connections to the repository.
+                use connection ID or user name
         Args (all to be supplied as kwargs):
             i (str): Repository connection ID.
             n (str): User name.
-            a (str): Terminates all connections.
+            a (Optional[str]): Terminates all connections.
 
         Note:
-            Terminates user connections to the repository.
             You can terminate user connections based on the user name or connection ID.
             You can also terminate all user connections to the repository.
         """
@@ -576,6 +575,7 @@ class Pmrep(object):
     def listuserconnections(self):
         """
         List information for each user connected to the repository.
+        use Domain connection for executed (d) not h+o
         """
         command = [self.pmrep, 'listuserconnections']
         column_separator = ','
@@ -597,13 +597,20 @@ class Pmrep(object):
         command = [self.pmrep, 'modifyfolder']
         pass
 
-    def notify(self):
+    def notify(self, **params):
         """
         Sends notification messages to users connected to a repository or users connected
         to all repositories managed by a Repository Service.
         """
         command = [self.pmrep, 'notify']
-        pass
+        opts_args = ['m']
+        opts_flags = []
+
+        command = [self.pmrep, 'notify']
+        command.extend(infa3.helper.cmd_prepare(params, opts_args, opts_flags))
+
+        pmrep_output = infa3.helper.cmd_execute(command)
+        infa3.helper.cmd_status(command, pmrep_output)
 
     def objectexport(self, **params):
         """
