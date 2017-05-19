@@ -97,10 +97,16 @@ def format_output(command_output, field_separator):
         'Completed at',
         'completed successfully'
     )
-    return [
-        item.strip().split(field_separator) for item in command_output
-        if item and not any(s in item for s in ignore_lines)
-    ]
+
+    result = []
+    for item in command_output:
+        if item and not any(s in item for s in ignore_lines):
+            if field_separator in item:
+                result.append(item.strip().split(field_separator))
+            else:
+                result.append(item.strip())
+
+    return result
 
 
 def create_import_control_xml(xml_output, src_folder, src_repo, tgt_folder, tgt_repo, dtd):
