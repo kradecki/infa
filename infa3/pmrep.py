@@ -22,9 +22,10 @@ class Pmrep(object):
     def __init__(self, pmrep, **params):
         self.pmrep = pmrep
         if not (os.path.isfile(self.pmrep) and os.access(self.pmrep, os.X_OK)):
-            raise InfaPmrepError("%s is not the correct path to pmrep binary" % self.pmrep)
+            raise InfaPmrepError(
+                "%s is not the correct path to pmrep binary" % self.pmrep)
 
-        opts_args = ['r', 'h', 'o', 'n', 's', 'x', 'u', 't']
+        opts_args = ['r', 'd', 'h', 'o', 'n', 's', 'x', 'u', 't']
         opts_flags = []
 
         command = [self.pmrep, 'connect']
@@ -296,7 +297,8 @@ class Pmrep(object):
 
             Refer to Informatica Command reference Handbook for details.
         """
-        opts_args = ['s', 'n', 'u', 'p', 'P', 'K', 'c', 'l', 'r', 'e', 'f', 'z', 'b', 'v', 'd', 'a', 'k']
+        opts_args = ['s', 'n', 'u', 'p', 'P', 'K', 'c', 'l',
+                     'r', 'e', 'f', 'z', 'b', 'v', 'd', 'a', 'k']
         opts_flags = ['t', 'x']
 
         command = [self.pmrep, 'createconnection']
@@ -548,12 +550,38 @@ class Pmrep(object):
         infa3.helper.cmd_status(command, pmrep_output)
         return infa3.helper.format_output(pmrep_output, column_separator)
 
+    def killuserconnection(self, **params):
+        """
+        Return a list of sources or targets used in a session.
+
+        Args (all to be supplied as kwargs):
+            i (str): Repository connection ID.
+            n (str): User name.
+            a (str): Terminates all connections.
+
+        Note:
+            Terminates user connections to the repository.
+            You can terminate user connections based on the user name or connection ID.
+            You can also terminate all user connections to the repository.
+        """
+        opts_args = ['i', 'n', 'a']
+        opts_flags = []
+
+        command = [self.pmrep, 'killuserconnection']
+        command.extend(infa3.helper.cmd_prepare(params, opts_args, opts_flags))
+
+        pmrep_output = infa3.helper.cmd_execute(command)
+        infa3.helper.cmd_status(command, pmrep_output)
+
     def listuserconnections(self):
         """
         List information for each user connected to the repository.
         """
         command = [self.pmrep, 'listuserconnections']
-        pass
+        column_separator = ','
+        pmrep_output = infa3.helper.cmd_execute(command)
+        infa3.helper.cmd_status(command, pmrep_output)
+        return infa3.helper.format_output(pmrep_output, column_separator)
 
     def massupdate(self):
         """
