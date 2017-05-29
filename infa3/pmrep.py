@@ -46,6 +46,27 @@ class Pmrep(object):
         infa3.helper.cmd_status(command, pmrep_output)
         return infa3.helper.format_output(pmrep_output, column_separator)
 
+    def assignintegrationservice(self, **params):
+        """
+        Assigns the PowerCenter Integration Service to the specified workflow
+
+        Args (all to be supplied as kwargs):
+            f (str): Required. Name of the folder that contains the workflow.
+            n (str): Name of the workflow.
+            i (str): Name of the PowerCenter Integration Service associated
+            with the workflow.
+
+            Refer to Informatica Command reference Handbook for details.
+        """
+        opts_args = ['f', 'n', 'i']
+        opts_flags = []
+
+        command = [self.pmrep, 'assignintegrationservice']
+        command.extend(infa3.helper.cmd_prepare(params, opts_args, opts_flags))
+
+        pmrep_output = infa3.helper.cmd_execute(command)
+        infa3.helper.cmd_status(command, pmrep_output)
+
     def addtodeploymentgroup(self, **params):
         """
         Add objects to a deployment group.
