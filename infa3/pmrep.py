@@ -639,18 +639,21 @@ class Pmrep(object):
         """
         return self.__default_io_command('objectexport', ['n', 'o', 't', 'v', 'f', 'i', 'u', 'l', 'e'], ['m', 's', 'b', 'r'], params)
 
-    def objectimport(self, src_folder, src_repo, tgt_folder, tgt_repo, **params):
+    def objectimport(self, src_folder, src_repo, tgt_folder, tgt_repo, encode=None, **params):
         """
         Imports objects from an XML file.
+        If workflow has more than one folder, then set src_folder and tgt_folder as lists
+        [encode]: default is ISO-8859-1
         Args (all to be supplied as kwargs):
             i (str): imput xml file name
             c (str): control file name
             l (Optional[str]): log file name
             p (Optional[str]): retain persistent value
+
         """
         if 'c' not in params:
-            infa3.helper.create_import_control_xml('impcntl.xml', src_folder, src_repo, tgt_folder, tgt_repo,
-                                                   dtd=os.path.join(os.path.dirname(self.pmrep), 'impcntl.dtd'))
+            infa3.helper.create_import_control_xml(xml_output='impcntl.xml', src_folder=src_folder, src_repo=src_repo, tgt_folder=tgt_folder, tgt_repo=tgt_repo,
+                                                   dtd=os.path.join(os.path.dirname(self.pmrep), 'impcntl.dtd'), encode=encode)
             params['c'] = 'impcntl.xml'
 
         return self.__default_io_command('objectimport', ['i', 'c', 'l'], ['p'], params)
