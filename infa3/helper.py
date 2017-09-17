@@ -109,7 +109,7 @@ def format_output(command_output, field_separator):
     return result
 
 
-def create_import_control_xml(xml_output, src_folder, src_repo, tgt_folder, tgt_repo, dtd):
+def create_import_control_xml(xml_output, src_folder, src_repo, tgt_folder, tgt_repo, dtd, encode=None):
     """
     Creates a control xml file for the objectimport command.
     For now the strategy is simply to replace all objects.
@@ -124,13 +124,20 @@ def create_import_control_xml(xml_output, src_folder, src_repo, tgt_folder, tgt_
     Returns:
         Nothing
     """
-    template = """<?xml version="1.0" encoding="ISO-8859-1"?>
+    template = """<?xml version="1.0" encoding="{encode}"?>
 <!DOCTYPE IMPORTPARAMS SYSTEM "{dtd}">
-<IMPORTPARAMS CHECKIN_AFTER_IMPORT="NO">
-<FOLDERMAP SOURCEFOLDERNAME="{src_folder}" SOURCEREPOSITORYNAME="{src_repo}" TARGETFOLDERNAME="{tgt_folder}" TARGETREPOSITORYNAME="{tgt_repo}"/>
-<RESOLVECONFLICT>
+<IMPORTPARAMS CHECKIN_AFTER_IMPORT="NO">\n""".format(dtd=dtd, encode=encode or "ISO-8859-1")
+    if type(src_folder) == list and type(tgt_folder) == list:
+        for s, t in zip(src_folder, tgt_folder):
+            template += '<FOLDERMAP SOURCEFOLDERNAME="{src_folder}" SOURCEREPOSITORYNAME="{src_repo}" TARGETFOLDERNAME="{tgt_folder}" TARGETREPOSITORYNAME="{tgt_repo}"/>\n'.format(
+                src_folder=s, src_repo=src_repo, tgt_folder=t, tgt_repo=tgt_repo)
+    else:
+        template += '<FOLDERMAP SOURCEFOLDERNAME="{src_folder}" SOURCEREPOSITORYNAME="{src_repo}" TARGETFOLDERNAME="{tgt_folder}" TARGETREPOSITORYNAME="{tgt_repo}"/>\n'.format(
+            src_folder=src_folder, src_repo=src_repo, tgt_folder=tgt_folder, tgt_repo=tgt_repo)
+
+    template += """<RESOLVECONFLICT>
 <TYPEOBJECT OBJECTTYPENAME = "ALL" RESOLUTION="REPLACE"/>
 </RESOLVECONFLICT>
-</IMPORTPARAMS>""".format(src_folder=src_folder, src_repo=src_repo, tgt_folder=tgt_folder, tgt_repo=tgt_repo, dtd=dtd)
+</IMPORTPARAMS>"""
     with open(xml_output, 'w') as f:
         f.write(template)

@@ -46,6 +46,27 @@ class Pmrep(object):
         infa3.helper.cmd_status(command, pmrep_output)
         return infa3.helper.format_output(pmrep_output, column_separator)
 
+    def assignintegrationservice(self, **params):
+        """
+        Assigns the PowerCenter Integration Service to the specified workflow
+
+        Args (all to be supplied as kwargs):
+            f (str): Required. Name of the folder that contains the workflow.
+            n (str): Name of the workflow.
+            i (str): Name of the PowerCenter Integration Service associated
+            with the workflow.
+
+            Refer to Informatica Command reference Handbook for details.
+        """
+        opts_args = ['f', 'n', 'i']
+        opts_flags = []
+
+        command = [self.pmrep, 'assignintegrationservice']
+        command.extend(infa3.helper.cmd_prepare(params, opts_args, opts_flags))
+
+        pmrep_output = infa3.helper.cmd_execute(command)
+        infa3.helper.cmd_status(command, pmrep_output)
+
     def addtodeploymentgroup(self, **params):
         """
         Add objects to a deployment group.
@@ -618,18 +639,21 @@ class Pmrep(object):
         """
         return self.__default_io_command('objectexport', ['n', 'o', 't', 'v', 'f', 'i', 'u', 'l', 'e'], ['m', 's', 'b', 'r'], params)
 
-    def objectimport(self, src_folder, src_repo, tgt_folder, tgt_repo, **params):
+    def objectimport(self, src_folder, src_repo, tgt_folder, tgt_repo, encode=None, **params):
         """
         Imports objects from an XML file.
+        If workflow has more than one folder, then set src_folder and tgt_folder as lists
+        [encode]: default is ISO-8859-1
         Args (all to be supplied as kwargs):
             i (str): imput xml file name
             c (str): control file name
             l (Optional[str]): log file name
             p (Optional[str]): retain persistent value
+
         """
         if 'c' not in params:
-            infa3.helper.create_import_control_xml('impcntl.xml', src_folder, src_repo, tgt_folder, tgt_repo,
-                                                   dtd=os.path.join(os.path.dirname(self.pmrep), 'impcntl.dtd'))
+            infa3.helper.create_import_control_xml(xml_output='impcntl.xml', src_folder=src_folder, src_repo=src_repo, tgt_folder=tgt_folder, tgt_repo=tgt_repo,
+                                                   dtd=os.path.join(os.path.dirname(self.pmrep), 'impcntl.dtd'), encode=encode)
             params['c'] = 'impcntl.xml'
 
         return self.__default_io_command('objectimport', ['i', 'c', 'l'], ['p'], params)
